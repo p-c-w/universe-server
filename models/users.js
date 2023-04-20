@@ -29,6 +29,21 @@ let users = [
       { id: 54823, type: 'tv', modified_at: '2022-01-01T12:59:32.746Z' },
     ],
   },
+  {
+    email: 'noname@gmail.com',
+    password: 'noname123',
+    name: 'noname',
+    subscribe_list: [{ id: 8, price: 7900 }],
+    like_list: [
+      { id: 507129, type: 'movie', modified_at: '2021-12-25T12:59:32.746Z' },
+      { id: 37692, type: 'tv', modified_at: '2020-12-31T12:59:32.746Z' },
+    ],
+    watch_list: [{ id: 18465, type: 'movie', modified_at: '2021-05-18T12:59:32.746Z' }],
+    history_list: [
+      { id: 829, type: 'movie', modified_at: '2023-04-15T12:59:32.746Z' },
+      { id: 54823, type: 'tv', modified_at: '2022-01-01T12:59:32.746Z' },
+    ],
+  },
 ];
 
 const createName = email => email.match(/^([a-zA-Z0-9_.+-]+)@/)[1];
@@ -48,5 +63,10 @@ const findUser = (email, password) =>
   users.find(user => user.email === email && user.password === password);
 
 const getUsers = () => users;
+
+const generateToken = newEmail =>
+  jwt.sign({ newEmail }, process.env.JWT_SECRET_KEY, {
+    expiresIn: '7d',
+  });
 
 module.exports = { createUser, findUserByEmail, findUser, getUsers };
