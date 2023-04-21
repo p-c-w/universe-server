@@ -16,7 +16,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(jwtMiddleware);
 
-app.use('/', auth);
+app.use('/api/', auth);
 
 /**
  * GET /api/users

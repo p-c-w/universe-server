@@ -1,6 +1,8 @@
 const express = require('express');
 const users = require('../models/users');
 
+const jwt = require('jsonwebtoken');
+
 const router = express.Router();
 
 // auth 요청
@@ -20,9 +22,9 @@ router.get('/auth', (req, res) => {
 router.post('/signin', (req, res) => {
   const { email, password } = req.body;
 
-  console.log(email, password);
+  // console.log(email, password);
   const user = users.findUser(email, password);
-  console.log('사용자 정보:', user);
+  // console.log('사용자 정보:', user);
 
   if (!user) return res.status(401).send({ error: '등록되지 않은 사용자입니다.' });
 
@@ -35,7 +37,14 @@ router.post('/signin', (req, res) => {
     httpOnly: true,
   });
 
-  res.send({ email, username: user.name });
+  res.send({
+    email,
+    name: user.name,
+    subscribe_list: user.subscribe_list,
+    like_list: user.like_list,
+    watch_list: user.watch_list,
+    history_list: user.history_list,
+  });
 });
 
 // 회원가입
