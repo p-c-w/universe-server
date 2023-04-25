@@ -1,34 +1,38 @@
 const express = require('express');
-const users = require('../models/users');
-
-const jwt = require('jsonwebtoken');
-
 const router = express.Router();
+const jwt = require('jsonwebtoken');
+const users = require('../../models/users');
 
-// auth 요청
-router.get('/auth', (req, res) => {
-  const { accessToken } = req.cookies;
+router.get('/verify', (req, res) => {
+  const accessToken = req.cookies.accessToken;
+
+  console.log('검증 토큰: ', accessToken);
 
   try {
-    const { email } = jwt.verify(accessToken, process.env.JWT_SECRET_KEY);
+    const decoded = jwt.verify(accessToken, process.env.JWT_SECRET_KEY);
 
-    res.send({ isLogin: true, email });
-  } catch (error) {
-    res.send({ isLogin: false });
+    console.log(`😀 사용자 인증 성공!`, decoded);
+
+    const user = users.findUserByEmail(decoded.email);
+    res.send({ email: user.email, name: user.name });
+  } catch (e) {
+    console.log('😱 사용자 인증 실패..', e);
+
+    res.sendStatus(401);
   }
 });
 
-// 로그인
 router.post('/signin', (req, res) => {
   const { email, password } = req.body;
 
-  // console.log(email, password);
+  if (!email || !password) return res.status(401).send({ error: '사용자 아이디 또는 패스워드가 전달되지 않았습니다.' });
+
   const user = users.findUser(email, password);
-  // console.log('사용자 정보:', user);
+  console.log('[USER]', user);
 
   if (!user) return res.status(401).send({ error: '등록되지 않은 사용자입니다.' });
 
-  const { accessToken } = jwt.sign({ email }, process.env.JWT_SECRET_KEY, {
+  const accessToken = jwt.sign({ email }, process.env.JWT_SECRET_KEY, {
     expiresIn: '1d',
   });
 
@@ -37,6 +41,7 @@ router.post('/signin', (req, res) => {
     httpOnly: true,
   });
 
+  // 로그인 성공
   res.send({
     email,
     name: user.name,
@@ -47,32 +52,20 @@ router.post('/signin', (req, res) => {
   });
 });
 
-// 회원가입
 router.post('/signup', (req, res) => {
   const { email, password } = req.body;
 
   const user = users.findUserByEmail(email);
-
-  console.log('중복된 계정:', user);
-
   if (user) return res.status(409).send({ error: '중복된 이메일이 존재합니다. ' });
 
-  const newUser = users.createUser({ email, password });
-
-  const accessToken = users.generateToken(newUser.email);
-
-  res.cookie('accessToken', accessToken, {
-    maxAge: 1000 * 60 * 60 * 24 * 7,
-    httpOnly: true,
-  });
-
-  res.send({ email, nickname });
+  users.createUser(email, password);
+  res.send({ email });
 });
 
-// 로그아웃
-router.get('/logout', (req, res) => {
+router.get('/signout', (req, res) => {
   res.clearCookie('accessToken');
   res.status(204).send({ message: '로그아웃 되었습니다.' });
+  res.end();
 });
 
 module.exports = router;
