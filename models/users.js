@@ -1,3 +1,5 @@
+const jwt = require('jsonwebtoken');
+
 let users = [
   {
     email: 'snowlover@gmail.com',
@@ -64,9 +66,12 @@ const findUser = (email, password) =>
 
 const getUsers = () => users;
 
+const changeUsers = (email, property) =>
+  (users = users.map(user => (user.email === email ? { ...user, ...property } : user)));
+
 const generateToken = newEmail =>
-  jwt.sign({ newEmail }, process.env.JWT_SECRET_KEY, {
+  jwt.sign(newEmail, process.env.JWT_SECRET_KEY, {
     expiresIn: '7d',
   });
 
-module.exports = { createUser, findUserByEmail, findUser, getUsers };
+module.exports = { createUser, findUserByEmail, findUser, getUsers, generateToken, changeUsers };
