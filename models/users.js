@@ -5,7 +5,7 @@ let users = [
     email: 'snowlover@gmail.com',
     password: 'snow123',
     name: 'snowlover',
-    subscribe_list: [{ id: 8, price: 7900 }],
+    subscribe_list: [{ id: 8, price: 'basic' }],
     like_list: [
       { id: 849869, type: 'movie', modified_at: '2021-12-25T12:59:32.746Z' },
       { id: 505642, type: 'movie', modified_at: '2020-12-31T12:59:32.746Z' },
@@ -20,7 +20,7 @@ let users = [
     email: 'squid@gmail.com',
     password: 'squid456',
     name: 'squid',
-    subscribe_list: [{ id: 8, price: 7900 }],
+    subscribe_list: [{ id: 8, price: 'basic' }],
     like_list: [
       { id: 843794, type: 'movie', modified_at: '2021-12-25T12:59:32.746Z' },
       { id: 616037, type: 'movie', modified_at: '2020-12-31T12:59:32.746Z' },
@@ -35,7 +35,7 @@ let users = [
     email: 'noname@gmail.com',
     password: 'noname123',
     name: 'noname',
-    subscribe_list: [{ id: 8, price: 7900 }],
+    subscribe_list: [{ id: 8, price: 'basic' }],
     like_list: [
       { id: 585511, type: 'movie', modified_at: '2021-12-25T12:59:32.746Z' },
       { id: 635302, type: 'movie', modified_at: '2020-12-31T12:59:32.746Z' },
@@ -74,13 +74,19 @@ const getUsers = () => users;
 const updateSubscribeList = (email, object) =>
   (users = users.map(user => (user.email === email ? { ...user, ...object } : user)));
 
-const addList = (email, list, value) => {
-  const newList = [...users.filter(user => user.email === email)[0][list], value];
+const findUserList = (email, list) => users.filter(user => user.email === email)[0][list];
+
+const addContent = (email, list, value) => {
+  const newList = [...findUserList(email, list), value];
 
   users = users.map(user => (user.email === email ? { ...user, [list]: newList } : user));
 };
 
-const findUserList = (email, list) => users.filter(user => user.email === email)[0][list];
+const deleteContent = (email, list, id) => {
+  const newList = [...findUserList(email, list).filter(movie => movie.id !== +id)];
+
+  users = users.map(user => (user.email === email ? { ...user, [list]: newList } : user));
+};
 
 module.exports = {
   createUser,
@@ -89,7 +95,6 @@ module.exports = {
   getUsers,
   generateToken,
   updateSubscribeList,
-  addList,
-  findUserList,
-  deleteList,
+  addContent,
+  deleteContent,
 };
