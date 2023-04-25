@@ -35,17 +35,48 @@ router.get('/:email', (req, res) => {
   }
 });
 
+// get user's list
+
+router.get('/:email/:list', (req, res) => {
+  const { email, list } = req.params;
+
+  const user = users.findUserList(email, list);
+
+  if (user) {
+    res.send(user);
+  } else {
+    res.status(404).send('User not found');
+  }
+});
+
 /**
  * PATCH /users
- * {}
+ * update Subscribe_list
  */
 router.patch('/:email', (req, res) => {
   const { email } = req.params;
 
   console.log('email: ', email);
 
-  users.changeUsers(email, req.body);
+  users.updateSubscribeList(email, req.body);
 
+  res.send(users);
+});
+
+/**
+ * PATCH /users
+ * update List(history, like, ..)
+ */
+router.patch('/:email/:list', (req, res) => {
+  const { email, list } = req.params;
+
+  console.log('email: ', email);
+  console.log('list: ', list);
+  console.log('req.body: ', req.body);
+
+  users.addList(email, list, req.body);
+
+  console.log('i am');
   res.send(users);
 });
 
@@ -59,5 +90,9 @@ router.delete('/:email', (req, res) => {
   const newUser = _user.filter(user => user.email !== email);
   res.send(newUser);
 });
+
+/**
+ * DELETE /api/users/:email
+ */
 
 module.exports = router;
