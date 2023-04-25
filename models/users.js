@@ -71,10 +71,25 @@ const findUser = (email, password) =>
 
 const getUsers = () => users;
 
+const updateSubscribeList = (email, object) =>
+  (users = users.map(user => (user.email === email ? { ...user, ...object } : user)));
+
+const addList = (email, list, value) => {
+  const newList = [...users.filter(user => user.email === email)[0][list], value];
+
+  users = users.map(user => (user.email === email ? { ...user, [list]: newList } : user));
+};
+
+const findUserList = (email, list) => users.filter(user => user.email === email)[0][list];
+
 module.exports = {
   createUser,
   findUserByEmail,
   findUser,
   getUsers,
   generateToken,
+  updateSubscribeList,
+  addList,
+  findUserList,
+  deleteList,
 };
