@@ -6,8 +6,6 @@ const users = require('../../models/users');
 router.get('/verify', (req, res) => {
   const accessToken = req.cookies.accessToken;
 
-  console.log('검증 토큰: ', accessToken);
-
   try {
     const decoded = jwt.verify(accessToken, process.env.JWT_SECRET_KEY);
 
