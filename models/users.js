@@ -77,9 +77,12 @@ const updateSubscribeList = (email, object) =>
 const findUserList = (email, list) => users.filter(user => user.email === email)[0][list];
 
 const addContent = (email, list, value) => {
-  const newList = [...findUserList(email, list), value];
+  const prevList = [...findUserList(email, list), value];
+  const isDuplicate = prevList.find(({ id }) => id === value.id);
 
-  users = users.map(user => (user.email === email ? { ...user, [list]: newList } : user));
+  if (isDuplicate) return;
+
+  users = users.map(user => (user.email === email ? { ...user, [list]: [...prevList, value] } : user));
 };
 
 const deleteContent = (email, list, id) => {
