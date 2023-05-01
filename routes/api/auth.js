@@ -40,14 +40,7 @@ router.post('/signin', (req, res) => {
   });
 
   // 로그인 성공
-  res.send({
-    email,
-    name: user.name,
-    subscribe_list: user.subscribe_list,
-    like_list: user.like_list,
-    watch_list: user.watch_list,
-    history_list: user.history_list,
-  });
+  res.send(email);
 });
 
 router.post('/signup', (req, res) => {
@@ -57,7 +50,7 @@ router.post('/signup', (req, res) => {
   if (user) return res.status(409).send({ error: '중복된 이메일이 존재합니다. ' });
 
   users.createUser(email, password);
-  res.send({ email });
+  res.send(email);
 });
 
 router.get('/signout', (req, res) => {
