@@ -10,7 +10,10 @@ let users = [
       { id: 849869, type: 'movie', modified_at: '2021-12-25T12:59:32.746Z' },
       { id: 505642, type: 'movie', modified_at: '2020-12-31T12:59:32.746Z' },
     ],
-    watch_list: [{ id: 776835, type: 'movie', modified_at: '2021-05-18T12:59:32.746Z' }],
+    watch_list: [
+      { id: 849869, type: 'movie', modified_at: '2021-12-25T12:59:32.746Z' },
+      { id: 119769, type: 'tv', modified_at: '2020-12-31T12:59:32.746Z' },
+    ],
     history_list: [
       { id: 668482, type: 'movie', modified_at: '2023-04-15T12:59:32.746Z' },
       { id: 61889, type: 'tv', modified_at: '2022-01-01T12:59:32.746Z' },
