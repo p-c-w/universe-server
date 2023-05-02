@@ -12,7 +12,7 @@ router.get('/verify', (req, res) => {
     console.log(`😀 사용자 인증 성공!`, decoded);
 
     const user = users.findUserByEmail(decoded.email);
-    res.send({ email: user.email, name: user.name });
+    res.send(user.email);
   } catch (e) {
     console.log('😱 사용자 인증 실패..', e);
 
