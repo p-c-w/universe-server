@@ -74,6 +74,7 @@ router.delete('/:email/:list/:id', (req, res) => {
   const { email, list, id } = req.params;
 
   users.deleteContent(email, list, id);
+
   res.send(users);
 });
 
