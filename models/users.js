@@ -2,10 +2,13 @@ const jwt = require('jsonwebtoken');
 
 let users = [
   {
-    email: 'snowlover@gmail.com',
-    password: 'snow123',
-    name: 'snowlover',
-    subscribe_list: [{ id: 8, price: 'basic' }],
+    email: 'sebap@gmail.com',
+    password: 'sebap123',
+    name: 'sebap',
+    subscribe_list: [
+      { id: 8, price: 'basic' },
+      { id: 337, price: 'basic' },
+    ],
     like_list: [
       { id: 849869, type: 'movie', modified_at: '2021-12-25T12:59:32.746Z' },
       { id: 505642, type: 'movie', modified_at: '2020-12-31T12:59:32.746Z' },
@@ -13,10 +16,25 @@ let users = [
     watch_list: [
       { id: 849869, type: 'movie', modified_at: '2021-12-25T12:59:32.746Z' },
       { id: 119769, type: 'tv', modified_at: '2020-12-31T12:59:32.746Z' },
+      { id: 668482, type: 'movie', modified_at: '2023-04-15T12:59:32.746Z' },
     ],
     history_list: [
-      { id: 668482, type: 'movie', modified_at: '2023-04-15T12:59:32.746Z' },
-      { id: 61889, type: 'tv', modified_at: '2022-01-01T12:59:32.746Z' },
+      { id: 61889, type: 'tv', modified_at: '2022-02-01T12:59:32.746Z' },
+      { id: 985939, type: 'movie', modified_at: '2022-01-01T12:59:32.746Z' },
+      { id: 820232, type: 'movie', modified_at: '2022-01-01T13:59:32.746Z' },
+      { id: 653851, type: 'movie', modified_at: '2022-04-01T12:59:32.746Z' },
+      { id: 438148, type: 'movie', modified_at: '2023-01-01T12:59:32.746Z' },
+      { id: 71712, type: 'tv', modified_at: '2023-02-01T12:59:32.746Z' },
+      { id: 60735, type: 'tv', modified_at: '2023-04-01T13:59:32.746Z' },
+      { id: 65334, type: 'tv', modified_at: '2022-05-02T12:59:32.746Z' },
+      { id: 1433, type: 'tv', modified_at: '2023-03-30T12:59:32.746Z' },
+      { id: 18165, type: 'tv', modified_at: '2023-03-31T12:59:32.746Z' },
+      { id: 1104040, type: 'movie', modified_at: '2022-04-01T12:59:32.746Z' },
+      { id: 493529, type: 'movie', modified_at: '2023-04-11T12:59:32.746Z' },
+      { id: 736526, type: 'movie', modified_at: '2022-07-21T12:59:32.746Z' },
+      { id: 675353, type: 'movie', modified_at: '2022-04-01T12:59:32.746Z' },
+      { id: 82856, type: 'tv', modified_at: '2022-12-04T12:59:32.746Z' },
+      { id: 60574, type: 'tv', modified_at: '2022-11-016T12:59:32.746Z' },
     ],
   },
   {
@@ -89,8 +107,10 @@ const addContent = (email, list, value) => {
 };
 
 const deleteContent = (email, list, id) => {
-  const newList = [...findUserList(email, list).filter(movie => movie.id !== +id)];
+  const isDuplicate = findUserList(email, list).find(({ id }) => id !== id);
+  if (isDuplicate) return;
 
+  const newList = [...findUserList(email, list).filter(movie => movie.id !== +id)];
   users = users.map(user => (user.email === email ? { ...user, [list]: newList } : user));
 };
 
