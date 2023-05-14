@@ -108,6 +108,15 @@ const addContent = (email, list, value) => {
   users = users.map(user => (user.email === email ? { ...user, [list]: [...prevList, value] } : user));
 };
 
+const updateContent = (email, list, id, value) => {
+  const updatedContent = { ...findUserList(email, list).find(content => content.id === id), ...value };
+  const newList = findUserList(email, list).map(content =>
+    content.id === +id ? { ...content, ...updatedContent } : content
+  );
+
+  users = users.map(user => (user.email === email ? { ...user, [list]: newList } : user));
+};
+
 const deleteContent = (email, list, id) => {
   const isDuplicate = findUserList(email, list).find(({ id }) => id !== id);
   if (isDuplicate) return;
@@ -124,5 +133,6 @@ module.exports = {
   generateToken,
   updateSubscribeList,
   addContent,
+  updateContent,
   deleteContent,
 };
