@@ -66,6 +66,19 @@ router.patch('/:email/:list', (req, res) => {
 });
 
 /**
+ * PATCH /users/:email/:list/:id
+ * Update content(modified_at...)
+ */
+router.patch('/:email/:list/:id', (req, res) => {
+  const { email, list, id } = req.params;
+  console.log(req.params, req.body);
+
+  users.updateContent(email, list, id, req.body);
+
+  res.send(users);
+});
+
+/**
  * DELETE /api/users/:email
  * Delete to List
  */
