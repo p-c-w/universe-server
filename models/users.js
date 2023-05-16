@@ -125,6 +125,15 @@ const deleteContent = (email, list, id) => {
   users = users.map(user => (user.email === email ? { ...user, [list]: newList } : user));
 };
 
+const changePassword = (email, newPassword) => {
+  users = users.map(user => (user.email === email ? { ...user, password: newPassword } : user));
+};
+
+const withdrawalUser = email => {
+  users = users.filter(user => user.email !== email);
+  console.log('users: ', users);
+};
+
 module.exports = {
   createUser,
   findUserByEmail,
@@ -135,4 +144,6 @@ module.exports = {
   addContent,
   updateContent,
   deleteContent,
+  changePassword,
+  withdrawalUser,
 };

@@ -59,4 +59,27 @@ router.get('/signout', (req, res) => {
   res.end();
 });
 
+router.patch('/changepw', (req, res) => {
+  const { email, nowPw, newPw, newConfirmPw } = req.body;
+
+  const user = users.findUser(email, nowPw);
+
+  if (!user) return res.status(401).send('비밀번호를 정확하게 입력해 주세요.');
+
+  if (newPw !== newConfirmPw) return res.status(401).send('새 비밀번호와 비밀번호 확인이 일치하지 않습니다.');
+
+  res.clearCookie('accessToken');
+  users.changePassword(email, newPw);
+
+  return res.send('비밀번호 변경에 성공하셨습니다.');
+});
+
+router.delete('/withdrawal/:email', (req, res) => {
+  const { email } = req.params;
+
+  users.withdrawalUser(email);
+  res.clearCookie('accessToken');
+  return res.send('회원 탈퇴가 완료됐습니다. 유니버스를 이용해주셔서 감사합니다.');
+});
+
 module.exports = router;
