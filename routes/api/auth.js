@@ -39,7 +39,6 @@ router.post('/signin', (req, res) => {
     httpOnly: true,
   });
 
-  // 로그인 성공
   res.send(email);
 });
 
@@ -47,7 +46,7 @@ router.post('/signup', (req, res) => {
   const { email, password } = req.body;
 
   const user = users.findUserByEmail(email);
-  if (user) return res.status(409).send({ error: '중복된 이메일이 존재합니다. ' });
+  if (user) return res.status(409).send('중복된 이메일이 존재합니다.');
 
   users.createUser(email, password);
   res.send(email);
@@ -55,7 +54,7 @@ router.post('/signup', (req, res) => {
 
 router.get('/signout', (req, res) => {
   res.clearCookie('accessToken');
-  res.status(204).send({ message: '로그아웃 되었습니다.' });
+  res.status(204).send('로그아웃 되었습니다.');
   res.end();
 });
 
