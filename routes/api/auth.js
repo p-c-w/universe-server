@@ -23,12 +23,9 @@ router.get('/verify', (req, res) => {
 router.post('/signin', (req, res) => {
   const { email, password } = req.body;
 
-  if (!email || !password) return res.status(401).send({ error: '사용자 아이디 또는 패스워드가 전달되지 않았습니다.' });
-
   const user = users.findUser(email, password);
-  console.log('[USER]', user);
 
-  if (!user) return res.status(401).send({ error: '등록되지 않은 사용자입니다.' });
+  if (!user) return res.status(401).send('잘못된 이메일이나 비밀번호가 입력됐습니다.');
 
   const accessToken = jwt.sign({ email }, process.env.JWT_SECRET_KEY, {
     expiresIn: '1d',
