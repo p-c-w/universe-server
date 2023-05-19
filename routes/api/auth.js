@@ -46,7 +46,9 @@ router.post('/signup', (req, res) => {
   if (user) return res.status(409).send('중복된 이메일이 존재합니다.');
 
   users.createUser(email, password);
-  res.send(email);
+  const newuser = users.findUserByEmail(email);
+
+  res.send({ email, name: newuser.name });
 });
 
 router.get('/signout', (req, res) => {
