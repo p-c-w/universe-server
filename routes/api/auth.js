@@ -53,7 +53,7 @@ router.post('/signup', (req, res) => {
 
 router.get('/signout', (req, res) => {
   res.clearCookie('accessToken');
-  res.status(204).send('로그아웃 되었습니다.');
+  res.status(204).send({ isLogin: false, message: '로그아웃 되었습니다.' });
   res.end();
 });
 
@@ -77,7 +77,7 @@ router.delete('/withdrawal/:email', (req, res) => {
 
   users.withdrawalUser(email);
   res.clearCookie('accessToken');
-  return res.send('회원 탈퇴가 완료됐습니다. 유니버스를 이용해주셔서 감사합니다.');
+  return res.send({ isLogin: false, message: '회원 탈퇴가 완료됐습니다. 유니버스를 이용해주셔서 감사합니다.' });
 });
 
 module.exports = router;
