@@ -53,8 +53,8 @@ router.post('/signup', (req, res) => {
 
 router.get('/signout', (req, res) => {
   res.clearCookie('accessToken');
-  res.status(204).send({ isLogin: false, message: '로그아웃 되었습니다.' });
-  res.end();
+
+  res.send({ isLogin: false });
 });
 
 router.patch('/changepw', (req, res) => {
