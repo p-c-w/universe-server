@@ -2,7 +2,7 @@
 
 **[🐕 김동규's github](https://github.com/5kdk)**  
 **[🐇 차윤슬's github](https://github.com/yunseul-dev)**  
-**[🐤 최인애's github](https://github.com/peachmilk24)**
+**[🐤 최인애's github](https://github.com/dev-CIA)**
 
 <br>
 
