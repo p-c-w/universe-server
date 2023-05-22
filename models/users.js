@@ -110,9 +110,12 @@ const addContent = (email, list, value) => {
 
 const updateContent = (email, list, id, value) => {
   const updatedContent = { ...findUserList(email, list).find(content => content.id === id), ...value };
-  const newList = findUserList(email, list).map(content =>
+  let newList = findUserList(email, list).map(content =>
     content.id === +id ? { ...content, ...updatedContent } : content
   );
+  if (list === 'history_list') {
+    newList = newList.sort((a, b) => new Date(a.modified_at).getTime() - new Date(b.modified_at).getTime());
+  }
 
   users = users.map(user => (user.email === email ? { ...user, [list]: newList } : user));
 };
