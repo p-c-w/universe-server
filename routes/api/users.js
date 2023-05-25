@@ -3,17 +3,11 @@ const users = require('../../models/users');
 
 const router = express.Router();
 
-/**
- * GET /api/users
- */
 router.get('/', (req, res) => {
   const user = users.getUsers();
   res.send(user);
 });
 
-/**
- * GET /api/users/:email
- */
 router.get('/:email', (req, res) => {
   const { email } = req.params;
 
@@ -26,9 +20,6 @@ router.get('/:email', (req, res) => {
   }
 });
 
-/**
- * GET /api/users/:email/:list
- */
 router.get('/:email/:list', (req, res) => {
   const { email, list } = req.params;
 
@@ -41,10 +32,6 @@ router.get('/:email/:list', (req, res) => {
   }
 });
 
-/**
- * PATCH /users/:email
- * update Subscribe_list
- */
 router.patch('/:email', (req, res) => {
   const { email } = req.params;
 
@@ -53,10 +40,6 @@ router.patch('/:email', (req, res) => {
   res.send(users);
 });
 
-/**
- * PATCH /users/:email/:list
- * Add to List(history, like, ..)
- */
 router.patch('/:email/:list', (req, res) => {
   const { email, list } = req.params;
 
@@ -65,23 +48,13 @@ router.patch('/:email/:list', (req, res) => {
   res.send(users);
 });
 
-/**
- * PATCH /users/:email/:list/:id
- * Update content(modified_at...)
- */
 router.patch('/:email/:list/:id', (req, res) => {
   const { email, list, id } = req.params;
-  console.log(req.params, req.body);
 
   users.updateContent(email, list, id, req.body);
 
   res.send(users);
 });
-
-/**
- * DELETE /api/users/:email
- * Delete to List
- */
 
 router.delete('/:email/:list/:id', (req, res) => {
   const { email, list, id } = req.params;

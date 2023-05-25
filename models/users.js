@@ -79,7 +79,6 @@ const generateToken = newEmail =>
 const createName = email => email.match(/^([a-zA-Z0-9_.+-]+)@/)[1];
 
 const createUser = (email, password) => {
-  // users = [...users, { userid, password: bcrypt.hashSync(password, 10) }];
   users = [
     ...users,
     { email, password, name: createName(email), subscribe_list: [], like_list: [], watch_list: [], history_list: [] },
@@ -88,9 +87,7 @@ const createUser = (email, password) => {
 
 const findUserByEmail = email => users.find(user => user.email === email);
 
-const findUser = (email, password) =>
-  // users.find(user => user.userid === userid && bcrypt.compareSync(password, user.password));
-  users.find(user => user.email === email && user.password === password);
+const findUser = (email, password) => users.find(user => user.email === email && user.password === password);
 
 const getUsers = () => users;
 
@@ -134,7 +131,6 @@ const changePassword = (email, newPassword) => {
 
 const withdrawalUser = email => {
   users = users.filter(user => user.email !== email);
-  console.log('users: ', users);
 };
 
 module.exports = {

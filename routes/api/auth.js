@@ -9,13 +9,9 @@ router.get('/verify', (req, res) => {
   try {
     const decoded = jwt.verify(accessToken, process.env.JWT_SECRET_KEY);
 
-    console.log('😀 사용자 인증 성공!', decoded);
-
     const user = users.findUserByEmail(decoded.email);
     res.send({ isLogin: true, email: user.email });
   } catch (e) {
-    console.log('😱 사용자 인증 실패..', e);
-
     res.send({ isLogin: false });
   }
 });
