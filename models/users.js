@@ -2,8 +2,8 @@ const jwt = require('jsonwebtoken');
 
 let users = [
   {
-    email: 'test@test.com',
-    password: 'test123',
+    email: 'testapp@testapp.com',
+    password: 'testapp123',
     name: '테스트닉네임',
     subscribe_list: [
       { id: 8, price: 'basic' },
