@@ -28,8 +28,10 @@ router.post('/signin', (req, res) => {
   });
 
   res.cookie('accessToken', accessToken, {
-    maxAge: 1000 * 60 * 60 * 24 * 7, // 7d
+    maxAge: 1000 * 60 * 60 * 24 * 7,
     httpOnly: true,
+    sameSite: 'none',
+    secure: true,
   });
 
   res.send(email);
