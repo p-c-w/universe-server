@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const users = require('../../models/users');
+const { verifyPassword } = require('../../lib/encryption');
 
 router.get('/verify', (req, res) => {
   const accessToken = req.cookies.accessToken;
@@ -19,9 +20,17 @@ router.get('/verify', (req, res) => {
 router.post('/signin', (req, res) => {
   const { email, password } = req.body;
 
-  const user = users.findUser(email, password);
+  const user = users.findUserByEmail(email);
 
-  if (!user) return res.status(401).send('잘못된 이메일이나 비밀번호가 입력됐습니다.');
+  try {
+    const verify = async user => {
+      return await verifyPassword(password, user.password.salt, user.password.hashedPassword);
+    };
+
+    if (!user || !verify(user)) return res.status(401).send('잘못된 이메일이나 비밀번호가 입력됐습니다.');
+  } catch (error) {
+    return res.status(400).send('로그인 오류');
+  }
 
   const accessToken = jwt.sign({ email }, process.env.JWT_SECRET_KEY, {
     expiresIn: '1d',
