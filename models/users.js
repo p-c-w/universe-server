@@ -6,7 +6,7 @@ let users = [
     email: 'testapp@testapp.com',
     // password: 'testapp123',
     password: {
-      password: 'K556nUYEyiSn8LCukJP6U/3KYjM0CinewFD0S1+voHI+4VLuGldhfCo0cWlbeDLOCyaQhPz1GBJgBHgTDyVp0Q==',
+      hashedPassword: 'K556nUYEyiSn8LCukJP6U/3KYjM0CinewFD0S1+voHI+4VLuGldhfCo0cWlbeDLOCyaQhPz1GBJgBHgTDyVp0Q==',
       salt: '7YbWa+ikY31+AqDx/2XntcMvSENZ9NzfTqHmlHZVlxb/cbdAdFrJR7I2C8fuBqal3CEA6W7/WljJNHFFwDLd6g==',
     },
     name: '테스트닉네임',
@@ -48,7 +48,7 @@ let users = [
     email: 'squid@gmail.com',
     // password: 'squid456',
     password: {
-      password: 'vcIU4PBpJunmqH5v9u2h+IcIdHMyt9UMQJNm0xV30s0Ig7CEduXI6tH7DVXZPTd6zYM9J0Tomxmkmb/EpYbJRw==',
+      hashedPassword: 'vcIU4PBpJunmqH5v9u2h+IcIdHMyt9UMQJNm0xV30s0Ig7CEduXI6tH7DVXZPTd6zYM9J0Tomxmkmb/EpYbJRw==',
       salt: 'yQa1A7aUmV/FFNtaNbMDrbYRJvKFkMxDob7PZl7aDxEd6FSTo9tyWCH6eaMhU7ANOlWRQcVFd7sQc8oRVefEWg==',
     },
     name: 'squid',
