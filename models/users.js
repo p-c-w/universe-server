@@ -48,7 +48,7 @@ let users = [
     email: 'squid@gmail.com',
     // password: 'squid456',
     password: {
-      hashedPassword: 'vcIU4PBpJunmqH5v9u2h+IcIdHMyt9UMQJNm0xV30s0Ig7CEduXI6tH7DVXZPTd6zYM9J0Tomxmkmb/EpYbJRw==',
+      hashedPassword: 'uK+gTDI0QZB/oDsKUpBGg4t79yrMuR3xO4vbcibQP/bBFcaLQKm6EBSgmkWjeQCl+4Eka/WRavy0UwujpasxoQ==',
       salt: 'yQa1A7aUmV/FFNtaNbMDrbYRJvKFkMxDob7PZl7aDxEd6FSTo9tyWCH6eaMhU7ANOlWRQcVFd7sQc8oRVefEWg==',
     },
     name: 'squid',
