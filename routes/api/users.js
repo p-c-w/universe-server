@@ -7,9 +7,10 @@ router.get('/:email', (req, res) => {
   const { email } = req.params;
 
   const user = users.findUserByEmail(email);
+  const userData = { ...user, password: '****************' };
 
   if (user) {
-    res.send(user);
+    res.send(userData);
   } else {
     res.status(404).send('User not found');
   }
