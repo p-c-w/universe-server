@@ -87,12 +87,14 @@ const generateToken = newEmail =>
 
 const createName = email => email.match(/^([a-zA-Z0-9_.+-]+)@/)[1];
 
-const createUser = (email, password) => {
+const createUser = async (email, password) => {
+  const _password = await verify.createHashedPassword(password);
+
   users = [
     ...users,
     {
       email,
-      password,
+      password: _password,
       name: createName(email),
       subscribe_list: [],
       like_list: [],
