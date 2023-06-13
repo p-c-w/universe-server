@@ -65,7 +65,11 @@ let users = [
   },
   {
     email: 'noname@gmail.com',
-    password: 'noname123',
+    // password: 'noname123',
+    password: {
+      hashedPassword: 'CQbNCgUqbMEuqHqxwyVLJGx9Stu7ZK1MPHRxs3aVE7b/VLB6lE6Le4dOP42D0evQj16EWaqBb0s59zTd2UvNaQ==',
+      salt: 'GT9QMDSwgoHCh2a2CGFSANsRRywf18fGqvJ4x8DwfKF8qPgT/b7WdrDy5OLEcKVS1cqUgnBM4UBfXsn178ra4Q==',
+    },
     name: 'noname',
     subscribe_list: [{ id: 8, price: 'basic' }],
     like_list: [
