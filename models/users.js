@@ -1,9 +1,14 @@
 const jwt = require('jsonwebtoken');
+const verify = require('../lib/encryption');
 
 let users = [
   {
     email: 'testapp@testapp.com',
-    password: 'testapp123',
+    // password: 'testapp123',
+    password: {
+      hashedPassword: 'K556nUYEyiSn8LCukJP6U/3KYjM0CinewFD0S1+voHI+4VLuGldhfCo0cWlbeDLOCyaQhPz1GBJgBHgTDyVp0Q==',
+      salt: '7YbWa+ikY31+AqDx/2XntcMvSENZ9NzfTqHmlHZVlxb/cbdAdFrJR7I2C8fuBqal3CEA6W7/WljJNHFFwDLd6g==',
+    },
     name: '테스트닉네임',
     subscribe_list: [
       { id: 8, price: 'basic' },
@@ -41,7 +46,11 @@ let users = [
   },
   {
     email: 'squid@gmail.com',
-    password: 'squid456',
+    // password: 'squid456',
+    password: {
+      hashedPassword: 'uK+gTDI0QZB/oDsKUpBGg4t79yrMuR3xO4vbcibQP/bBFcaLQKm6EBSgmkWjeQCl+4Eka/WRavy0UwujpasxoQ==',
+      salt: 'yQa1A7aUmV/FFNtaNbMDrbYRJvKFkMxDob7PZl7aDxEd6FSTo9tyWCH6eaMhU7ANOlWRQcVFd7sQc8oRVefEWg==',
+    },
     name: 'squid',
     subscribe_list: [{ id: 8, price: 'basic' }],
     like_list: [
@@ -56,7 +65,11 @@ let users = [
   },
   {
     email: 'noname@gmail.com',
-    password: 'noname123',
+    // password: 'noname123',
+    password: {
+      hashedPassword: 'CQbNCgUqbMEuqHqxwyVLJGx9Stu7ZK1MPHRxs3aVE7b/VLB6lE6Le4dOP42D0evQj16EWaqBb0s59zTd2UvNaQ==',
+      salt: 'GT9QMDSwgoHCh2a2CGFSANsRRywf18fGqvJ4x8DwfKF8qPgT/b7WdrDy5OLEcKVS1cqUgnBM4UBfXsn178ra4Q==',
+    },
     name: 'noname',
     subscribe_list: [{ id: 8, price: 'basic' }],
     like_list: [
@@ -78,10 +91,20 @@ const generateToken = newEmail =>
 
 const createName = email => email.match(/^([a-zA-Z0-9_.+-]+)@/)[1];
 
-const createUser = (email, password) => {
+const createUser = async (email, password) => {
+  const _password = await verify.createHashedPassword(password);
+
   users = [
     ...users,
-    { email, password, name: createName(email), subscribe_list: [], like_list: [], watch_list: [], history_list: [] },
+    {
+      email,
+      password: _password,
+      name: createName(email),
+      subscribe_list: [],
+      like_list: [],
+      watch_list: [],
+      history_list: [],
+    },
   ];
 };
 
@@ -125,8 +148,9 @@ const deleteContent = (email, list, id) => {
   users = users.map(user => (user.email === email ? { ...user, [list]: newList } : user));
 };
 
-const changePassword = (email, newPassword) => {
-  users = users.map(user => (user.email === email ? { ...user, password: newPassword } : user));
+const changePassword = async (email, newPassword) => {
+  const _newPassword = await verify.createHashedPassword(newPassword);
+  users = users.map(user => (user.email === email ? { ...user, password: _newPassword } : user));
 };
 
 const withdrawalUser = email => {

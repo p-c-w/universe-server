@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const users = require('../../models/users');
+const verify = require('../../lib/encryption');
 
 router.get('/verify', (req, res) => {
   const accessToken = req.cookies.accessToken;
@@ -16,12 +17,18 @@ router.get('/verify', (req, res) => {
   }
 });
 
-router.post('/signin', (req, res) => {
+router.post('/signin', async (req, res) => {
   const { email, password } = req.body;
 
-  const user = users.findUser(email, password);
+  const user = users.findUserByEmail(email);
 
-  if (!user) return res.status(401).send('잘못된 이메일이나 비밀번호가 입력됐습니다.');
+  try {
+    const verifiedResult = await verify.verifyPassword(password, user.password.salt, user.password.hashedPassword);
+
+    if (!user || !verifiedResult) return res.status(401).send('잘못된 이메일이나 비밀번호가 입력됐습니다.');
+  } catch (error) {
+    return res.status(400).send('로그인 오류');
+  }
 
   const accessToken = jwt.sign({ email }, process.env.JWT_SECRET_KEY, {
     expiresIn: '1d',
@@ -37,13 +44,13 @@ router.post('/signin', (req, res) => {
   res.send(email);
 });
 
-router.post('/signup', (req, res) => {
+router.post('/signup', async (req, res) => {
   const { email, password } = req.body;
 
   const user = users.findUserByEmail(email);
   if (user) return res.status(409).send('중복된 이메일이 존재합니다.');
 
-  users.createUser(email, password);
+  await users.createUser(email, password);
   const newuser = users.findUserByEmail(email);
 
   res.send({ email, name: newuser.name });
@@ -55,17 +62,18 @@ router.get('/signout', (req, res) => {
   res.send({ isLogin: false });
 });
 
-router.patch('/changepw', (req, res) => {
+router.patch('/changepw', async (req, res) => {
   const { email, nowPassword, newPassword, confirmPassword } = req.body;
 
-  const user = users.findUser(email, nowPassword);
+  const user = users.findUserByEmail(email);
+  const verifiedResult = await verify.verifyPassword(nowPassword, user.password.salt, user.password.hashedPassword);
 
-  if (!user) return res.status(401).send('비밀번호를 정확하게 입력해 주세요.');
+  if (!verifiedResult) return res.status(401).send('비밀번호를 정확하게 입력해 주세요.');
 
   if (newPassword !== confirmPassword) return res.status(401).send('새 비밀번호와 비밀번호 확인이 일치하지 않습니다.');
 
   res.clearCookie('accessToken');
-  users.changePassword(email, newPassword);
+  await users.changePassword(email, newPassword);
 
   return res.send('비밀번호 변경에 성공하셨습니다.');
 });
