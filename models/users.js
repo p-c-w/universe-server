@@ -148,8 +148,9 @@ const deleteContent = (email, list, id) => {
   users = users.map(user => (user.email === email ? { ...user, [list]: newList } : user));
 };
 
-const changePassword = (email, newPassword) => {
-  users = users.map(user => (user.email === email ? { ...user, password: newPassword } : user));
+const changePassword = async (email, newPassword) => {
+  const _newPassword = await verify.createHashedPassword(newPassword);
+  users = users.map(user => (user.email === email ? { ...user, password: _newPassword } : user));
 };
 
 const withdrawalUser = email => {
